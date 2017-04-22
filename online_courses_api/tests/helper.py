@@ -1,54 +1,52 @@
 import json
+from collections import namedtuple
 
+from online_courses_api.models import Teacher
 
-Joe = dict(
+Joe = Teacher(
+    id=1,
     first_name='Joe',
     last_name='Moon',
-    spec=['math', 'physics'],
+    specs=['math', 'physics'],
 )
 
 
-Mary = dict(
+Mary = Teacher(
+    id=2,
     first_name='Mary',
     last_name='Smith',
-    spec=['english'],
+    specs=['physics', 'astronomy'],
 )
 
 
-Heather = dict(
+Heather = Teacher(
+    id=3,
     first_name='Heather',
     last_name='Moon',
-    spec=['physics', 'astronomy'],
+    specs=['english'],
 )
 
 
 teachers = (Joe, Mary, Heather)
 
 
-def is_teachers(resp, *teacher):
+def is_teachers(resp, *teachers):
     if type(resp) == dict:
         resp = [resp]
-    s1 = set(map(
-        lambda x: dict(filter(lambda k,v: k != 'id', x.items())),
-        resp
-    ))
+    s1 = set(map(lambda x: Teacher(**x), resp))
     s2 = set(teachers)
     return s1 == s2
 
 
-def post(app, url, data):
-    resp = app.post(url, data=data)
-    assert resp.status_code == 200
+def __request_200(method, *args, **kwargs):
+    resp = method(*args, **kwargs)
+    assert resp.status_code == 200, f'Response code is {resp.status_code}'
     return json.loads(resp.data)
 
 
-def get(app, url):
-    resp = app.get(url)
-    assert resp.status_code == 200
-    return json.loads(resp.data)
-
-
-def delete(app, url):
-    resp = app.delete(url)
-    assert resp.status_code == 200
-    return json.loads(resp.data)
+post = lambda client, url, data: \
+    __request_200(client.post, url, data=json.dumps(data), content_type='application/json')
+get = lambda client, url: __request_200(client.get, url)
+delete = lambda client, url: __request_200(client.delete, url)
+put = lambda client, url, data: \
+    __request_200(client.put, url, data=json.dumps(data), content_type='application/json')
