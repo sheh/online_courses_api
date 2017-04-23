@@ -4,9 +4,10 @@ import pytest
 
 from online_courses_api.database import init_db
 import online_courses_api
+from online_courses_api.models.klass import Class
 from online_courses_api.models.student import Student
 from online_courses_api.models.teacher import Teacher
-from online_courses_api.tests.helper import teachers, Joe, students, Kelly
+from online_courses_api.tests.helper import teachers, Joe, students, Kelly, classes
 from sqlalchemy.orm.session import make_transient
 
 
@@ -50,16 +51,59 @@ def session(db, request):
 
 
 @pytest.fixture(scope='function')
-def teachers_added(session):
+def test_data_added(session):
     for t_dict in teachers:
         t = Teacher(**t_dict)
         session.add(t)
+    for s_dict in students:
+        s = Student(**s_dict)
+        session.add(s)
+    for c_dict in classes:
+        c = Class(**c_dict)
+        session.add(c)
     session.commit()
 
 
 @pytest.fixture(scope='function')
-def students_added(session):
-    for s_dict in students:
-        s = Student(**s_dict)
-        session.add(s)
+def kelly_in_math_class(session, test_data_added):
+    c = Class.query.get('1')
+    s = Student.query.get('1')
+    s.classes.append(c)
+    session.commit()
+
+
+@pytest.fixture(scope='function')
+def kelly_in_english_class(session, test_data_added):
+    c = Class.query.get('2')
+    s = Student.query.get('1')
+    s.classes.append(c)
+    session.commit()
+
+
+@pytest.fixture(scope='function')
+def steve_in_english_class(session, test_data_added):
+    c = Class.query.get('2')
+    s = Student.query.get('2')
+    s.classes.append(c)
+    session.commit()
+
+
+@pytest.fixture(scope='function')
+def math_class_bind_joe(session, test_data_added):
+    c = Class.query.get('1')
+    c.teacher_id = 1
+    session.commit()
+
+
+@pytest.fixture(scope='function')
+def physics_class_bind_joe(session, test_data_added):
+    c = Class.query.get('3')
+    c.teacher_id = 1
+    session.commit()
+
+
+@pytest.fixture(scope='function')
+def physics_class_bind_mary(session, test_data_added):
+    c = Class.query.get('3')
+    c.teacher_id = '2'
     session.commit()

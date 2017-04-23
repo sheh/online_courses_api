@@ -41,6 +41,30 @@ Steve = dict(
 students = (Kelly, Steve)
 
 
+MathClass = dict(
+    name='math1',
+    description='Math class #1',
+    spec='math'
+)
+
+
+EnglishClass = dict(
+    name='eng1',
+    description='English class #1',
+    spec='english'
+)
+
+
+PhysicsClass = dict(
+    name='phy1',
+    description='Physics class #1',
+    spec='physics'
+)
+
+
+classes = (MathClass, EnglishClass, PhysicsClass)
+
+
 def __request_200(method, *args, **kwargs):
     resp = method(*args, **kwargs)
     assert resp.status_code == 200, f'Response code is {resp.status_code}'
