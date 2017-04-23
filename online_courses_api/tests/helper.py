@@ -1,26 +1,23 @@
 import json
-from collections import namedtuple
 
-from online_courses_api.models import Teacher
+from online_courses_api.models.teacher import Teacher
+from online_courses_api.models.student import Student
 
-Joe = Teacher(
-    id=1,
+Joe = dict(
     first_name='Joe',
     last_name='Moon',
     specs=['math', 'physics'],
 )
 
 
-Mary = Teacher(
-    id=2,
+Mary = dict(
     first_name='Mary',
     last_name='Smith',
     specs=['physics', 'astronomy'],
 )
 
 
-Heather = Teacher(
-    id=3,
+Heather = dict(
     first_name='Heather',
     last_name='Moon',
     specs=['english'],
@@ -30,12 +27,18 @@ Heather = Teacher(
 teachers = (Joe, Mary, Heather)
 
 
-def is_teachers(resp, *teachers):
-    if type(resp) == dict:
-        resp = [resp]
-    s1 = set(map(lambda x: Teacher(**x), resp))
-    s2 = set(teachers)
-    return s1 == s2
+Kelly = dict(
+    first_name='Kelly',
+    last_name='Williams',
+)
+
+
+Steve = dict(
+    first_name='Steve',
+    last_name='Young',
+)
+
+students = (Kelly, Steve)
 
 
 def __request_200(method, *args, **kwargs):

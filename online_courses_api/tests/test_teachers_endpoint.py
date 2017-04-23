@@ -1,32 +1,32 @@
 import json
 
 import pytest
+from flask import jsonify
 
-from online_courses_api.models import Teacher
-from online_courses_api.tests.helper import post, get, delete, Joe, is_teachers, put
-
-
-def test_create_teacher(client, db, joe):
-    del joe['id']
-    resp = post(client, '/teachers', data=joe)
-    assert Teacher(**resp) == Joe
+from online_courses_api.models.teacher import Teacher
+from online_courses_api.tests.helper import post, get, delete, Joe, put
 
 
-def test_create_teacher_400(client, db, joe):
-    del joe['id']
-    del joe['first_name']
-    resp = client.post('/teachers', data=joe)
+def test_create_teacher(client, session):
+    js = post(client, '/teachers', data=Joe)
+    assert js == {**Joe, **dict(id=1)}
+
+
+def test_create_teacher_with_wrong_data(client, session):
+    d = Joe.copy()
+    del d['first_name']
+    resp = client.post('/teachers', data=json.dumps(d), content_type='application/json')
     assert resp.status_code == 400
 
 
-def test_get_teacher_404(client, db):
+def test_get_teacher_not_found(client, session):
     resp = client.get('/teachers/1')
     assert resp.status_code == 404
 
 
 def test_get_teacher(client, teachers_added):
-    resp = get(client, '/teachers/1')
-    assert Teacher(**resp) == Joe
+    js = get(client, '/teachers/1')
+    assert js == {**Joe, **dict(id=1)}
 
 
 def test_delete_teacher(client, teachers_added):
@@ -78,20 +78,20 @@ def test_filter_by_multiply_spec(client, teachers_added):
         assert 'physics' in r['specs']
 
 
-def test_update_teacher_wrong_data(client, teachers_added, joe):
-    del joe['id']
-    del joe['first_name']
-    resp = client.put('/teachers/1', data=json.dumps(joe), content_type='application/json')
+def test_update_teacher_wrong_data(client, teachers_added):
+    d = Joe.copy()
+    del d['first_name']
+    resp = client.put('/teachers/1', data=json.dumps(d), content_type='application/json')
     assert resp.status_code == 400
 
 
-def test_update_teacher(client, teachers_added, joe):
-    joe['specs'].append('astronomy')
-    resp = put(client, '/teachers/1', data=joe)
-    assert resp['specs'] == joe['specs']
+def test_update_teacher(client, teachers_added):
+    d = Joe.copy()
+    d['specs'] = Joe['specs'] + ['astronomy']
+    resp = put(client, '/teachers/1', data=d)
+    assert resp['specs'] == d['specs']
 
 
-def test_update_nonexistent_teacher(client, teachers_added, joe):
-    joe['specs'].append('astronomy')
-    resp = client.put('/teachers/100500', data=json.dumps(joe), content_type='application/json')
-    assert resp.status_code == 400
+def test_update_nonexistent_teacher(client, teachers_added):
+    resp = client.put('/teachers/100500', data=json.dumps(Joe), content_type='application/json')
+    assert resp.status_code == 404

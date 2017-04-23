@@ -3,7 +3,6 @@ import sqlite3
 from online_courses_api import app
 from flask import g
 
-from online_courses_api.models import Teacher
 
 
 def get_db():

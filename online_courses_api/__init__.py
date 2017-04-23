@@ -1,9 +1,11 @@
 import tempfile
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['DATABASE'] = 'database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQLAlchemy(app)
 
 
 import online_courses_api.endpoints.teachers

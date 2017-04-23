@@ -1,1 +1,2 @@
-CREATE TABLE teachers (id integer primary key, first_name text, last_name text, specs text)
+CREATE TABLE teachers (id integer primary key, first_name text, last_name text, specs text);
+CREATE TABLE students (id integer primary key, first_name text, last_name text);
