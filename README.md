@@ -1,20 +1,20 @@
 ### Install and Run
 
 
-1. Create and activate virtual environment 
+**1. Create and activate virtual environment** 
 
 ```buildoutcfg
 python3.6 -m venv $TMPDIR/online_courses_api
 source $TMPDIR/online_courses_api/bin/activate
 ```
 
-2. Install `online_courses_api` package
+**2. Install `online_courses_api` package**
 
 ```buildoutcfg
 pip install git+https://github.com/sheh/online_courses_api
 ```
 
-3. Run
+**3. Run**
 
 ```buildoutcfg
 run_app.py 
@@ -53,7 +53,7 @@ online_courses_api/tests/test_students_specific.py ......
 
 * sqlite is used
 * there are no verbose messages in case of errors, just http code
-* only one param can be used for filtration (except filtration by `clase` and `teacher` for according endpoints)
+* only one param can be used for filtration (except filtration by `class` and `teacher` for according endpoints)
 * complete data structure should be `PUT` for update, a partial update is not supported
 
 ### The schema
