@@ -4,8 +4,8 @@
 **1. Create and activate virtual environment** 
 
 ```buildoutcfg
-python3.6 -m venv $TMPDIR/online_courses_api
-source $TMPDIR/online_courses_api/bin/activate
+python3.6 -m venv <path-to-some-dir>/online_courses_api
+source <path-to-some-dir>/online_courses_api/bin/activate
 ```
 
 **2. Install `online_courses_api` package**
@@ -31,8 +31,8 @@ run options:
 
 
 ```buildoutcfg
-python3.6 -m venv $TMPDIR/online_courses_api
-source $TMPDIR/online_courses_api/bin/activate
+python3.6 -m venv <path-to-some-dir>/online_courses_api
+source <path-to-some-dir>/online_courses_api/bin/activate
 git clone https://github.com/sheh/online_courses_api 
 cd online_courses_api
 pip install .
