@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import os
 import tempfile
@@ -25,4 +27,4 @@ if __name__ == '__main__':
         print(f'File {args.db} not found, create and init database')
         with app.app_context():
             init_db()
-    app.run(port=args.port, debug=True)
+    app.run(port=args.port)
