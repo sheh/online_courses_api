@@ -23,11 +23,11 @@ run_app.py
 run options:
 ```buildoutcfg
     --port: port default:5000
-    --db: path to sqlite file, default:$TMPDIR/online_courses_api.db>
+    --db: path to sqlite file, default:$TMPDIR/online_courses_api.db
     --drop-db: drop database before start
 ```
 
-### Run test 
+### Run the tests
 
 
 ```buildoutcfg
@@ -47,16 +47,14 @@ online_courses_api/tests/test_endpoints_common.py ..............................
 online_courses_api/tests/test_students_specific.py ......
 
 =========================================================================== 57 passed in 0.89 seconds ============================================================================
-(online_courses_api) ➜  online_courses_api git:(master)
 ```
 
 ### Assumptions:
 
 * sqlite is used
-* there are no verbose message about the cause of request error, just http code
-* only on param can be use for filtration
-* filtration by `class` and `teacher` support arrays
-* complete data structure should be `PUT` for update, partial update is not supported
+* there are no verbose messages in case of errors, just http code
+* only one param can be used for filtration (except filtration by `clase` and `teacher` for according endpoints)
+* complete data structure should be `PUT` for update, a partial update is not supported
 
 ### The schema
 
@@ -78,7 +76,7 @@ online_courses_api/tests/test_students_specific.py ......
 * `PUT /students/<id>` - update
 * `DELETE /students/<id>` - delete
 * `PUT /students/<sid>/classes/<cid>` - add student `sid` to class `cid`
-* `DELETE /students/<sid>/classes/<cid>` - delete student `sid` to class `cid`
+* `DELETE /students/<sid>/classes/<cid>` - delete student `sid` from class `cid`
 
 
 **/classes**
@@ -98,7 +96,7 @@ online_courses_api/tests/test_students_specific.py ......
 
 (command `http` below is `httpie` tool `pip install httpie`)
 
-1. Create a teacher:
+**1. Create a teacher:**
 
 `http POST http://localhost:5000/teachers first_name=Joe last_name=Moon specs:='["math", "physics"]'`
 
@@ -116,7 +114,7 @@ response:
 }
 ```
 
-2. Get the teacher:
+**2. Get the teacher:**
 
 `http GET http://localhost:5000/teachers/1`
 
@@ -134,7 +132,7 @@ response:
 }
 ```
 
-3. Filter teachers by a parameter:
+**3. Filter teachers by a parameter:**
 
 `http GET 'http://localhost:5000/teachers?first_name=Joe'`
 
@@ -152,7 +150,7 @@ response:
 }
 ```
 
-4. Update a teacher
+**4. Update a teacher**
 
 `http PUT http://localhost:5000/teachers/1 first_name=Joseph last_name=Moon specs:='["math"]'`
 
@@ -170,7 +168,7 @@ response:
 ```
 
 
-5. Delete the teacher:
+**5. Delete the teacher:**
 
 `http DELETE 'http://localhost:5000/teachers/1'`
 
@@ -181,7 +179,7 @@ response:
 ```
 
 
-6. Create class:
+**6. Create class:**
 
 `http POST http://localhost:5000/classes name=math description='A math class' spec=math`
 
@@ -196,7 +194,7 @@ response:
 }
 ```
 
-7. Bind class and teacher:
+**7. Bind class and teacher:**
 
 `http PUT http://localhost:5000/classes/1/teacher/1`
 
@@ -206,7 +204,7 @@ response:
 {}
 ```
 
-8. Filter classes by teacher:
+**8. Filter classes by teacher:**
 
 
 `http GET http://localhost:5000/classes?teacher=1`
@@ -224,7 +222,7 @@ response:
 ]
 ```
 
-9. Create a student:
+**9. Create a student:**
 
 `http POST http://localhost:5000/students first_name=Kelly last_name=Williams`
 
@@ -238,7 +236,7 @@ response:
 }
 ```
 
-10. Add a student to class:
+**10. Add a student to class:**
 
 `http PUT http://localhost:5000/students/1/classes/1`
 
@@ -248,7 +246,7 @@ response:
 {}
 ```
 
-11. Filter students by class:
+**11. Filter students by class:**
 
 `http GET http://localhost:5000/students?class=1`
 
